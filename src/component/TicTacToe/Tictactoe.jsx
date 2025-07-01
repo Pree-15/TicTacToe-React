@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import './TicTacToe.css';
-import circle_icon from '../Assets/circle.png';
-import cross_icon from '../Assets/cross.png';
+import "./TicTacToe.css";
+import circle_icon from "../Assets/circle.png";
+import cross_icon from "../Assets/cross.png";
 
 const TicTacToe = () => {
-  const [data, setData] = useState(Array(9).fill(""));
-  const [turn, setTurn] = useState("X"); // Start with Player X
-  const [winner, setWinner] = useState("");
+  const [board, setBoard] = useState(Array(9).fill(""));
+  const [turn, setTurn] = useState("X");
   const [lock, setLock] = useState(false);
+  const [message, setMessage] = useState("");
 
   const winPatterns = [
     [0, 1, 2],
@@ -20,42 +20,45 @@ const TicTacToe = () => {
     [2, 4, 6],
   ];
 
-  const checkWinner = (board) => {
+  const checkWinner = (updatedBoard) => {
     for (let pattern of winPatterns) {
       const [a, b, c] = pattern;
-      if (board[a] && board[a] === board[b] && board[b] === board[c]) {
+      if (
+        updatedBoard[a] &&
+        updatedBoard[a] === updatedBoard[b] &&
+        updatedBoard[a] === updatedBoard[c]
+      ) {
         setLock(true);
-        if (board[a] === "X") setWinner("You Won!");
-        else setWinner("You Lost!");
+        if (updatedBoard[a] === "X") setMessage("🎉 You Won!");
+        else setMessage("😞 You Lost!");
         return;
       }
     }
 
-    // Check for draw
-    if (board.every(cell => cell !== "")) {
-      setWinner("It's a Draw!");
+    if (updatedBoard.every(cell => cell !== "")) {
+      setMessage("🤝 It's a Draw!");
       setLock(true);
     }
   };
 
-  const handleClick = (index) => {
-    if (data[index] !== "" || lock) return;
+  const handleBoxClick = (index) => {
+    if (board[index] !== "" || lock) return;
 
-    const newData = [...data];
-    newData[index] = turn;
-    setData(newData);
-    checkWinner(newData);
+    const newBoard = [...board];
+    newBoard[index] = turn;
+    setBoard(newBoard);
+    checkWinner(newBoard);
     setTurn(turn === "X" ? "O" : "X");
   };
 
   const resetGame = () => {
-    setData(Array(9).fill(""));
+    setBoard(Array(9).fill(""));
     setTurn("X");
-    setWinner("");
     setLock(false);
+    setMessage("");
   };
 
-  const getIcon = (val) => {
+  const renderIcon = (val) => {
     if (val === "X") return <img src={cross_icon} alt="X" />;
     if (val === "O") return <img src={circle_icon} alt="O" />;
     return null;
@@ -64,28 +67,12 @@ const TicTacToe = () => {
   return (
     <div className="container">
       <h1 className="title">Tic Tac Toe Game In <span>React</span></h1>
-
-      {winner && (
-        <div className="result-message">
-          <h2>{winner}</h2>
-        </div>
-      )}
+      {message && <h2 className="result">{message}</h2>}
 
       <div className="board">
-        {[0, 1, 2].map((row) => (
-          <div className="row" key={row}>
-            {[0, 1, 2].map((col) => {
-              const index = row * 3 + col;
-              return (
-                <div
-                  key={index}
-                  className="boxes"
-                  onClick={() => handleClick(index)}
-                >
-                  {getIcon(data[index])}
-                </div>
-              );
-            })}
+        {board.map((val, index) => (
+          <div key={index} className="box" onClick={() => handleBoxClick(index)}>
+            {renderIcon(val)}
           </div>
         ))}
       </div>
