@@ -1,5 +1,4 @@
 # Tic-Tac-Toe – Web Application
----
 
 This project is a simple and interactive Tic-Tac-Toe game developed using HTML5, CSS3, and JavaScript, implemented through the React.js framework. The goal of the project was to demonstrate core web development skills, including UI structuring, styling, interactivity, and state management.
 ---
