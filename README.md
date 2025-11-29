@@ -47,6 +47,6 @@ React is used to build the UI in reusable components, while JavaScript controls 
 
 ## 📎 GitHub Repository
 
-Link: Here[https://github.com/Pree-15/TicTacToe-React.git]
+Link: Here(https://github.com/Pree-15/TicTacToe-React.git)
 
 
